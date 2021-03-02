@@ -5,13 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tp_retrofit.models.Article
 import com.example.tp_retrofit.repositories.ArticleRepository
+import java.util.concurrent.Executors
 
 class HomeViewModel : ViewModel() {
 
     private val repository: ArticleRepository = ArticleRepository.getInstance()
+    private val _articles = MutableLiveData<List<Article>>()
+    val articles: LiveData<List<Article>>
+        get() = _articles
 
-    fun getArticles(): LiveData<List<Article>> {
-        return repository.getArticles()
+    init {
+        loadArticles()
+    }
+
+    fun loadArticles() {
+        Executors.newSingleThreadExecutor().execute() {
+            val result = repository.getArticles()
+            _articles.value = result.value
+        }
     }
 
     private val _text = MutableLiveData<String>().apply {

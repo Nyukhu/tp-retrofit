@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
                 textView.text = it
             }
         )
-        homeViewModel.getArticles().observe(
+        homeViewModel.articles.observe(
             viewLifecycleOwner,
             Observer {
                 Log.d("Articles", it.toString())
