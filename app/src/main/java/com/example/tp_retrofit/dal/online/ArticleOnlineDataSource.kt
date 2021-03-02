@@ -59,7 +59,7 @@ class ArticleOnlineService : NewsDataSource {
                 val original = chain.request()
                 val originalHttpUrl = original.url
                 val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("apikey", apiKey)
+                    .addQueryParameter("apiKey", apiKey)
                     .build()
 
                 val requestBuilder = original.newBuilder()
@@ -70,10 +70,10 @@ class ArticleOnlineService : NewsDataSource {
         })
     }
 
-    override fun getArticles(): LiveData<List<Article>> {
+    override fun getArticles(query: String): LiveData<List<Article>> {
         val _data = MutableLiveData<List<Article>> ()
 
-        val articleList = service.getArticles().execute().body()?.articles ?: listOf()
+        val articleList = service.getArticles(query).execute().body()?.articles ?: listOf()
 
         // TODO Convertir la liste des articles du modèle du web service vers le modèle métier ArcicleItem --> Article
 
@@ -81,12 +81,12 @@ class ArticleOnlineService : NewsDataSource {
             it.toArticle()
         }
 
-        _data.value = articles
+        _data.postValue(articles)
         return _data
     }
 
     companion object {
         private const val apiKey = "9b94cc25989d42f79277f9536abd6bc8"
-        private const val apiUrl = "http://newsapi.org/v2"
+        private const val apiUrl = "https://newsapi.org/v2/"
     }
 }

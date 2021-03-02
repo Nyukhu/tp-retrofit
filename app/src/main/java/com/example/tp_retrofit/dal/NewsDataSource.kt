@@ -4,5 +4,5 @@ import androidx.lifecycle.LiveData
 import com.example.tp_retrofit.models.Article
 
 interface NewsDataSource {
-    fun getArticles(): LiveData<List<Article>>
+    fun getArticles(query: String): LiveData<List<Article>>
 }

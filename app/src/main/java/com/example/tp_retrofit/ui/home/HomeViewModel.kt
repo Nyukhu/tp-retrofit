@@ -15,13 +15,13 @@ class HomeViewModel : ViewModel() {
         get() = _articles
 
     init {
-        loadArticles()
+        loadArticles("Covid")
     }
 
-    fun loadArticles() {
-        Executors.newSingleThreadExecutor().execute() {
-            val result = repository.getArticles()
-            _articles.value = result.value
+    fun loadArticles(query: String) {
+        Executors.newSingleThreadExecutor().execute{
+            val result = repository.getArticles(query)
+            _articles.postValue(result.value)
         }
     }
 
